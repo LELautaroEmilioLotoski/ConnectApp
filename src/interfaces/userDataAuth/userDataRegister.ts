@@ -1,7 +1,7 @@
 
 
 export interface IUserDataRegister{
-    userName: string,
+    name: string,
     email: string,
     password: string,
     birthday: string

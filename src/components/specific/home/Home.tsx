@@ -7,6 +7,7 @@ const HomeComponent = () => {
     <Link href="/Register">Register</Link>
     <Link href="/Login">Login</Link>
     <Link href="/UserDashboard">Dashboard</Link>
+    <Link href="/Feed">Feed</Link>
     </>
   )
 }
