@@ -7,12 +7,11 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+    daisyui: {
+      themes: ["light", "dark", "cupcake"],
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
 } satisfies Config;

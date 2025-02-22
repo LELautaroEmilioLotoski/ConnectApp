@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sobrescribir esquema de colores */
+:root {
+  color-scheme: light;
+}
+
+/* Asegurar fondo y texto base */
+html {
+  @apply bg-white text-black;
+}
