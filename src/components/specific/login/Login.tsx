@@ -1,8 +1,9 @@
 "use client";
 import { IUserDataLogin } from "@/interfaces/userDataAuth/userDataLogin";
-import { ILoginRequest } from "@/mocks/mockInicioSesion";
+import { login } from "@/services/login/Login";
 import { ArrowRight, Mail } from "lucide-react";
 import React, { useState } from "react";
+import Cookies from "js-cookie"
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -17,22 +18,17 @@ const Login = () => {
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true)
-    const { email, password } = user;
-
-    if(!email || !password) return alert("Por favor, completa todos los campos")
-    
-    if(user){
-        ILoginRequest.email = email
-        ILoginRequest.password = password
-    }
+    setLoading(true);
 
     try {
-      alert("me loguee correctamente");
-      console.log(ILoginRequest);
+      const res = await login(user);
+      const token = res.user.token
       
+      alert("se inicio sesion correctamente");
+      Cookies.set('userToken', token, { expires: 7 })
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +38,11 @@ const Login = () => {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 hover:shadow-2xl">
         <div className="relative h-32 bg-gradient-to-r from-blue-500 to-purple-600">
-          <svg className="absolute bottom-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <svg
+            className="absolute bottom-0"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1440 320"
+          >
             <path
               fill="#ffffff"
               fillOpacity="1"
@@ -51,10 +51,15 @@ const Login = () => {
           </svg>
         </div>
         <div className="px-8 pt-8 pb-12">
-          <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900">Bienvenido de nuevo</h2>
+          <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900">
+            Bienvenido de nuevo
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Correo electrónico
               </label>
               <div className="relative rounded-md shadow-sm">
@@ -76,7 +81,10 @@ const Login = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Contraseña
               </label>
               <div className="relative rounded-md shadow-sm">
@@ -91,9 +99,8 @@ const Login = () => {
                   value={user.password}
                   onChange={handleChange}
                 />
-              </div>
+              </div>0
             </div>
-
             <div>
               <button
                 type="submit"
@@ -132,12 +139,18 @@ const Login = () => {
           </form>
           <div className="mt-6 flex items-center justify-between">
             <div className="text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a
+                href="#"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 ¿Olvidaste tu contraseña?
               </a>
             </div>
             <div className="text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a
+                href="#"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 Crear cuenta
               </a>
             </div>
@@ -145,6 +158,6 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 export default Login;

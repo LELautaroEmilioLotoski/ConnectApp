@@ -63,9 +63,9 @@ export default function Navbar() {
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
           </button>
-          <div className="relative w-8 h-8 rounded-full overflow-hidden">
+          {/* <div className="relative w-8 h-8 rounded-full overflow-hidden">
             <Image src="/placeholder-user.jpg" alt="@usuario" layout="fill" objectFit="cover" />
-          </div>
+          </div> */}
         </nav>
       </div>
     </header>
