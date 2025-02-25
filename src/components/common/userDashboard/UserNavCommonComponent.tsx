@@ -6,7 +6,7 @@ const navItems = [
   { icon: <User size={20} />, label: "Perfil" },
   { icon: <Mail size={20} />, label: "Mensajes" },
   { icon: <Bell size={20} />, label: "Notificaciones" },
-  { icon: <Users size={20} />, label: "Conexiones" },
+  { icon: <Users size={20} />, label: "Amigos" },
   { icon: <Settings size={20} />, label: "Ajustes" },
 ];
 
