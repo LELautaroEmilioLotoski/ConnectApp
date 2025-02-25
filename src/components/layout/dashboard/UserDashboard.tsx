@@ -1,6 +1,9 @@
 import PublicationComponent from "@/components/common/publications/PublicationComponent";
+import AsideUserLeft from "@/components/specific/aside/AsideUserLeft";
+import AsideUserRight from "@/components/specific/aside/AsideUserRight";
 import CoverPhotoComponent from "@/components/specific/userDashboard/coverPhoto/CoverPhotoComponent";
 import Friends from "@/components/specific/userDashboard/friends/Friends";
+import Photos from "@/components/specific/userDashboard/photos/Photos";
 import UserData from "@/components/specific/userDashboard/userDataDashboard/UserData";
 import UserDataDashboard from "@/components/specific/userDashboard/userDataDashboard/UserDataDashboard";
 import UserNav from "@/components/specific/userDashboard/userDataDashboard/UserNav";
@@ -12,8 +15,12 @@ const UserDashboard = () => {
 
   return (
     <>
-      <section className="bg-gray-200">
-        <div className="min-w-[940px] max-w-[1020px] m-auto bg-white">
+      <section className="bg-gray-200 relative overflow-x-hidden">
+        <div className="absolute left-0 top-0 h-full w-[260px]">
+          <AsideUserLeft />
+        </div>
+        {/* Contenedor principal */}
+        <div className="min-w-[940px] max-w-[1020px] m-auto bg-white relative">
           <div className="relative flex justify-center items-center">
             <CoverPhotoComponent />
           </div>
@@ -27,14 +34,23 @@ const UserDashboard = () => {
             <UserNav />
           </div>
         </div>
+
         <section className="min-w-[940px] max-w-[1020px] m-auto">
-          <div className="flex justify-evenly items-start gap-4">
+          <aside className="flex justify-evenly items-start gap-4">
             <PublicationComponent />
             <div className="pt-8">
               <Friends />
+              <div className="pt-8">
+                <Photos />
+              </div>
             </div>
-          </div>
+          </aside>
         </section>
+
+        {/* AsideUser flotante */}
+        <div className="absolute right-0 top-0 h-full w-[260px]">
+          <AsideUserRight />
+        </div>
       </section>
     </>
   );
