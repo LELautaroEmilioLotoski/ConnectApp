@@ -3,11 +3,13 @@ import { IUserDataLogin } from "@/interfaces/userDataAuth/userDataLogin";
 import { login } from "@/services/login/Login";
 import { ArrowRight, Mail } from "lucide-react";
 import React, { useState } from "react";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { getUser } from "@/hooks/getUserHook/getUser";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<IUserDataLogin>({
+  const [credential, setCredential] = useState<IUserDataLogin>({
     email: "",
     password: "",
   });
@@ -15,20 +17,27 @@ const Login = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
-    setUser((prev) => ({ ...prev, [name]: value }));
+    setCredential((prev) => ({ ...prev, [name]: value }));
   };
+
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
     try {
-      const res = await login(user);
-      const token = res.user.token
-      
-      alert("se inicio sesion correctamente");
-      Cookies.set('userToken', token, { expires: 7 })
-      setLoading(false);
+      const res = await login(credential);
+      const token = res.user.token;
+      const userId = res.user.id;
+
+      if (token) {
+        Cookies.set("userToken", token, { expires: 7 });
+        getUser(userId)
+        alert("se inicio sesion correctamente");
+        setLoading(false);
+        router.push("/UserDashboard");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +83,7 @@ const Login = () => {
                   required
                   className="mt-1 w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500 pl-10"
                   placeholder="tu@ejemplo.com"
-                  value={user.email}
+                  value={credential.email}
                   onChange={handleChange}
                 />
               </div>
@@ -96,10 +105,10 @@ const Login = () => {
                   required
                   className="mt-1 w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
                   placeholder="••••••••"
-                  value={user.password}
+                  value={credential.password}
                   onChange={handleChange}
                 />
-              </div>0
+              </div>
             </div>
             <div>
               <button
