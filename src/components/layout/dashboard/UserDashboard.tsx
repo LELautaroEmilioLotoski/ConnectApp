@@ -1,3 +1,4 @@
+"use client";
 import PublicationComponent from "@/components/common/publications/PublicationComponent";
 import AsideUserLeft from "@/components/specific/aside/AsideUserLeft";
 import AsideUserRight from "@/components/specific/aside/AsideUserRight";
@@ -7,51 +8,55 @@ import Photos from "@/components/specific/userDashboard/photos/Photos";
 import UserData from "@/components/specific/userDashboard/userDataDashboard/UserData";
 import UserDataDashboard from "@/components/specific/userDashboard/userDataDashboard/UserDataDashboard";
 import UserNav from "@/components/specific/userDashboard/userDataDashboard/UserNav";
-import { users } from "@/mocks/usersMock";
+import { useUserContext } from "@/context/user/UserContext";
 import React from "react";
 
 const UserDashboard = () => {
-  const usersData = users[2];
+  const { token, setToken } = useUserContext();
 
   return (
     <>
-      <section className="bg-gray-200 relative overflow-x-hidden">
-        <div className="absolute left-0 top-0 h-full w-[260px]">
-          <AsideUserLeft />
-        </div>
-        {/* Contenedor principal */}
-        <div className="min-w-[940px] max-w-[1020px] m-auto bg-white relative">
-          <div className="relative flex justify-center items-center">
-            <CoverPhotoComponent />
+      {token ? (
+        <section className="bg-gray-200 relative overflow-x-hidden">
+          <div className="absolute left-0 top-0 h-full w-[260px]">
+            <AsideUserLeft />
           </div>
-          <div className="flex justify-center items-center gap-4">
-            <UserDataDashboard />
-          </div>
-          <div className="flex justify-center items-center gap-4 pt-[5rem]">
-            <UserData />
-          </div>
-          <div className="relative flex justify-center pt-4">
-            <UserNav />
-          </div>
-        </div>
-
-        <section className="min-w-[940px] max-w-[1020px] m-auto">
-          <aside className="flex justify-evenly items-start gap-4">
-            <PublicationComponent />
-            <div className="pt-8">
-              <Friends />
-              <div className="pt-8">
-                <Photos />
-              </div>
+          {/* Contenedor principal */}
+          <div className="min-w-[940px] max-w-[1020px] m-auto bg-white relative">
+            <div className="relative flex justify-center items-center">
+              <CoverPhotoComponent />
             </div>
-          </aside>
-        </section>
+            <div className="flex justify-center items-center gap-4">
+              <UserDataDashboard />
+            </div>
+            <div className="flex justify-center items-center gap-4 pt-[5rem]">
+              <UserData />
+            </div>
+            <div className="relative flex justify-center pt-4">
+              <UserNav />
+            </div>
+          </div>
 
-        {/* AsideUser flotante */}
-        <div className="absolute right-0 top-0 h-full w-[260px]">
-          <AsideUserRight />
-        </div>
-      </section>
+          <section className="min-w-[940px] max-w-[1020px] m-auto">
+            <aside className="flex justify-evenly items-start gap-4">
+              <PublicationComponent />
+              <div className="pt-8">
+                <Friends />
+                <div className="pt-8">
+                  <Photos />
+                </div>
+              </div>
+            </aside>
+          </section>
+
+          {/* AsideUser flotante */}
+          <div className="absolute right-0 top-0 h-full w-[260px]">
+            <AsideUserRight />
+          </div>
+        </section>
+      ) : (
+        <h2>No hay un usuario</h2>
+      )}
     </>
   );
 };

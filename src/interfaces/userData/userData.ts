@@ -7,3 +7,14 @@ export interface IUserData {
     coverPicture: string,
     friends: number
 }
+
+export interface IUserDataResponseData {
+    id: string,
+    name: string,
+    email: string,
+    token: string
+}
+
+export interface IUser {
+    user: IUserData
+}
