@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/hooks/getUserHook/getUser";
+import { useUserContext } from "@/context/user/UserContext";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -16,11 +17,12 @@ const Login = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-
     setCredential((prev) => ({ ...prev, [name]: value }));
   };
 
   const router = useRouter();
+
+  const { setUser, setToken } = useUserContext();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,10 +35,16 @@ const Login = () => {
 
       if (token) {
         Cookies.set("userToken", token, { expires: 7 });
-        getUser(userId)
-        alert("se inicio sesion correctamente");
-        setLoading(false);
-        router.push("/UserDashboard");
+        const getUserData = await getUser(userId);
+
+        if (res.user && token) {
+          setUser(getUserData);
+          setToken(token);
+          
+          alert("Se inició sesión correctamente");
+          setLoading(false);
+          router.push("/UserDashboard");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -44,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex h-[800px] items-center justify-center overflow-hidden">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 hover:shadow-2xl">
         <div className="relative h-32 bg-gradient-to-r from-blue-500 to-purple-600">
           <svg

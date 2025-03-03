@@ -1,13 +1,13 @@
-"use client"
+"use client";
 import { useUserContext } from "@/context/user/UserContext";
 import Link from "next/link";
 
 export default function Navbar() {
-  const {token} = useUserContext();  
+  const { token, user, logoutUser } = useUserContext();
 
   return (
     <header className="bg-blue-700 text-white p-4 sticky top-0 z-10">
-      {token ? (
+      {token && user ? (
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold">
             ConnectApp
@@ -67,10 +67,11 @@ export default function Navbar() {
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
               </svg>
             </button>
+            <button onClick={logoutUser}>Cerrar sesión</button>
           </nav>
         </div>
       ) : (
-        <div>
+        <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold">
             ConnectApp
           </Link>
@@ -81,8 +82,10 @@ export default function Navbar() {
               className="w-full bg-white text-black px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
-          <button>Iniciar sesion</button>
-          <button>Registrarse</button>
+          <div className="">
+            <Link href="/Login" className="mr-4">Iniciar sesion</Link>
+            <Link href="/Register">Registrarse</Link>
+          </div>
         </div>
       )}
     </header>

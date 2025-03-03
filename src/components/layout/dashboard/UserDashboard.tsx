@@ -1,5 +1,7 @@
 "use client";
+import React from "react";
 import PublicationComponent from "@/components/common/publications/PublicationComponent";
+import UserButtonsCommon from "@/components/common/userDashboard/UserButtonsCommon";
 import AsideUserLeft from "@/components/specific/aside/AsideUserLeft";
 import AsideUserRight from "@/components/specific/aside/AsideUserRight";
 import CoverPhotoComponent from "@/components/specific/userDashboard/coverPhoto/CoverPhotoComponent";
@@ -9,34 +11,32 @@ import UserData from "@/components/specific/userDashboard/userDataDashboard/User
 import UserDataDashboard from "@/components/specific/userDashboard/userDataDashboard/UserDataDashboard";
 import UserNav from "@/components/specific/userDashboard/userDataDashboard/UserNav";
 import { useUserContext } from "@/context/user/UserContext";
-import React from "react";
 
 const UserDashboard = () => {
-  const { token, setToken } = useUserContext();
+  const { token, user } = useUserContext();
 
   return (
     <>
-      {token ? (
+      {token && user ? (
         <section className="bg-gray-200 relative overflow-x-hidden">
-          <div className="absolute left-0 top-0 h-full w-[260px]">
-            <AsideUserLeft />
-          </div>
-          {/* Contenedor principal */}
+          <AsideUserLeft />
           <div className="min-w-[940px] max-w-[1020px] m-auto bg-white relative">
             <div className="relative flex justify-center items-center">
               <CoverPhotoComponent />
             </div>
-            <div className="flex justify-center items-center gap-4">
-              <UserDataDashboard />
-            </div>
-            <div className="flex justify-center items-center gap-4 pt-[5rem]">
-              <UserData />
+            <div className="flex gap-12 items-center justify-between m-5">
+              <div className="flex justify-center pl-24 gap-8">
+                <div className="flex justify-around items-center gap-4">
+                  <UserDataDashboard />
+                </div>
+                <UserData />
+              </div>
+              <UserButtonsCommon />
             </div>
             <div className="relative flex justify-center pt-4">
               <UserNav />
             </div>
           </div>
-
           <section className="min-w-[940px] max-w-[1020px] m-auto">
             <aside className="flex justify-evenly items-start gap-4">
               <PublicationComponent />
@@ -48,11 +48,7 @@ const UserDashboard = () => {
               </div>
             </aside>
           </section>
-
-          {/* AsideUser flotante */}
-          <div className="absolute right-0 top-0 h-full w-[260px]">
-            <AsideUserRight />
-          </div>
+          <AsideUserRight />
         </section>
       ) : (
         <h2>No hay un usuario</h2>
