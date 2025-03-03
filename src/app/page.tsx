@@ -1,9 +1,5 @@
-import HomeComponent from "@/components/specific/home/Home";
+import HomeView from "@/components/layout/homeView/HomeView";
 
 export default function Home() {
-  return (
-    <div>
-      <HomeComponent />
-    </div>
-  );
+  return <HomeView />;
 }

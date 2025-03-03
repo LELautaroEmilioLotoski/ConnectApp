@@ -3,39 +3,56 @@ import { IUserDataLogin } from "@/interfaces/userDataAuth/userDataLogin";
 import { login } from "@/services/login/Login";
 import { ArrowRight, Mail } from "lucide-react";
 import React, { useState } from "react";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { getUser } from "@/hooks/getUserHook/getUser";
+import { useUserContext } from "@/context/user/UserContext";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<IUserDataLogin>({
+  const [credential, setCredential] = useState<IUserDataLogin>({
     email: "",
     password: "",
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-
-    setUser((prev) => ({ ...prev, [name]: value }));
+    setCredential((prev) => ({ ...prev, [name]: value }));
   };
+
+  const router = useRouter();
+
+  const { setUser, setToken } = useUserContext();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
     try {
-      const res = await login(user);
-      const token = res.user.token
-      
-      alert("se inicio sesion correctamente");
-      Cookies.set('userToken', token, { expires: 7 })
-      setLoading(false);
+      const res = await login(credential);
+      const token = res.user.token;
+      const userId = res.user.id;
+
+      if (token) {
+        Cookies.set("userToken", token, { expires: 7 });
+        const getUserData = await getUser(userId);
+
+        if (res.user && token) {
+          setUser(getUserData);
+          setToken(token);
+          
+          alert("Se inició sesión correctamente");
+          setLoading(false);
+          router.push("/UserDashboard");
+        }
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex h-[800px] items-center justify-center overflow-hidden">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 hover:shadow-2xl">
         <div className="relative h-32 bg-gradient-to-r from-blue-500 to-purple-600">
           <svg
@@ -74,7 +91,7 @@ const Login = () => {
                   required
                   className="mt-1 w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500 pl-10"
                   placeholder="tu@ejemplo.com"
-                  value={user.email}
+                  value={credential.email}
                   onChange={handleChange}
                 />
               </div>
@@ -96,10 +113,10 @@ const Login = () => {
                   required
                   className="mt-1 w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
                   placeholder="••••••••"
-                  value={user.password}
+                  value={credential.password}
                   onChange={handleChange}
                 />
-              </div>0
+              </div>
             </div>
             <div>
               <button
