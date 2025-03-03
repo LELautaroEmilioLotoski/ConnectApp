@@ -6,12 +6,16 @@ const UserData = () => {
   const { user } = useUserContext();
 
   return (
-    <div className="relative">
-      <h2 className="flex text-3xl font-bold text-black justify-center items-center">
-        {user?.name}
-      </h2>
-      <AboutMe />
-    </div>
+    <>
+      {user ? (
+        <div className="relative flex flex-col items-center pl-28">
+          <h2 className="text-3xl font-bold text-black">{user?.name}</h2>
+          <AboutMe />
+        </div>
+      ) : (
+        <h2>Inicia sesión primero</h2>
+      )}
+    </>
   );
 };
 

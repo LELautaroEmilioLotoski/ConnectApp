@@ -15,9 +15,9 @@ import {
   Users,
 } from "lucide-react";
 
-const AsideUser = () => {
+const AsideUserRight = () => {
   return (
-    <div className="bg-white w-[300px] h-full right-0 top-0 p-5 shadow-lg">
+    <div className="bg-white p-5 shadow-lg absolute right-0 top-0 h-full w-[260px]">
       <div className="fixed">
         <div className="bg-white text-black">
           <h4 className="text-xl p-2 mb-4">Menu</h4>
@@ -41,4 +41,4 @@ const AsideUser = () => {
   );
 };
 
-export default AsideUser;
+export default AsideUserRight;

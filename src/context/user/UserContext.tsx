@@ -1,13 +1,15 @@
 "use client";
-import { IUserDataResponseData } from "@/interfaces/userData/userData";
+import { IUserData } from "@/interfaces/userData/userData";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 interface IUserContextProps {
-  user: IUserDataResponseData | null;
-  setUser: (user: IUserDataResponseData | null) => void;
+  user: IUserData | null;
+  setUser: (user: IUserData | null) => void;
   token: string | undefined;
   setToken: (token: string | undefined) => void;
+  logoutUser: () => void;
 }
 
 const AuthContext = createContext<IUserContextProps>({
@@ -15,37 +17,49 @@ const AuthContext = createContext<IUserContextProps>({
     id: "",
     name: "",
     email: "",
+    bio: "",
+    location: "",
+    profilePicture: "",
+    coverPicture: "",
+    friends: 0,
     token: "",
   },
   setUser: () => {},
   token: "",
   setToken: () => "",
+  logoutUser: () => {}
 });
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<IUserDataResponseData | null>(null);
+  const [user, setUser] = useState<IUserData | null>(null);
   const [token, setToken] = useState<string | undefined>(undefined);
-
+  const router = useRouter();
+  
   useEffect(() => {
     const cookieToken = Cookies.get("userToken");
     if (cookieToken) {
       setToken(cookieToken);
-    }
-  }, []);
 
-  useEffect(() => {
+      const userData = localStorage.getItem("userData");
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+    }
+  }, [token]);
+
+  const logoutUser = () => {
+    const cookieToken = Cookies.get("userToken");
     const userData = localStorage.getItem("userData");
-    if (userData) {
-      const userParseData = JSON.parse(userData);
 
-      setUser(userParseData);
-    } else {
-      console.log("No se pudo realizar la actualización del estado");
+    if(cookieToken && userData){
+      Cookies.remove("userToken");
+      localStorage.removeItem("userData")
+      router.push("/")
     }
-  }, []);
+  }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, token, setToken }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );
