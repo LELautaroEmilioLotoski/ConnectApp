@@ -1,10 +1,14 @@
-export interface IPublications {
-  id: number;
+export interface IPublicationsData {
   content: string;
-  image: string;
-  video: string;
+  image?: string;
+  video?: string;
   createdAt: string;
   likes: number;
-  comments: number;
-  userId: number;
+  comments: string[];
+  userId: string;
+  id: string
+}
+
+export interface IPublications {
+  data: IPublicationsData
 }

@@ -55,6 +55,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
       Cookies.remove("userToken");
       localStorage.removeItem("userData")
       router.push("/")
+      window.location.reload();
     }
   }
 
