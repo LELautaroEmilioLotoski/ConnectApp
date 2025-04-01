@@ -13,12 +13,10 @@ const UpdateAccount = () => {
   const { user } = useUserContext();
   const [editDataUser, seteditDataUser] = useState<IUserDataUpdate>({
     name: "",
-    email: "",
     bio: "",
     location: "",
     profilePicture: "",
     coverPicture: "",
-    friends: 0,
     password: "",
     birthdate: "",
   });
@@ -59,9 +57,9 @@ const UpdateAccount = () => {
     );
 
     try {
-      confirm("Se actualizó correctamente");
-      const res = await editProfile(id, filteredData);
-
+      confirm("Se actualizó correctamente");      
+      const res = await editProfile(id, filteredData);  
+          
       if (res) {
         alert(
           "Cierra sesión y vuelve a iniciar nuevamente para que los cambios se guarden correctamente"
@@ -178,7 +176,7 @@ const UpdateAccount = () => {
                 />
               </div>
 
-              <section className="flex gap-4 mt-6">
+              <section className="flex gap-4 mt-6 justify-between">
                 <button
                   className="flex items-center gap-2 border px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
                   onClick={handleOnClick}

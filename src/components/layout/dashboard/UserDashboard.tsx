@@ -39,13 +39,13 @@ const UserDashboard = () => {
           </div>
           <section className="min-w-[940px] max-w-[1020px] m-auto">
             <aside className="flex justify-evenly items-start gap-4">
-              <PublicationComponent />
               <div className="pt-8">
                 <Friends />
                 <div className="pt-8">
                   <Photos />
                 </div>
               </div>
+              <PublicationComponent />
             </aside>
           </section>
           <AsideUserRight />
